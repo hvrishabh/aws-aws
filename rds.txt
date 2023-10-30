@@ -1,0 +1,29 @@
+CREATE TABLE db1.student
+(
+    student_id int(10) not null,
+    student_first_name varchar(20) not null,
+    student_last_name varchar(20)not null
+);
+
+mysqldump --databases --user=root --password db1> export_into_db.sql
+
+
+dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com
+root
+root1234
+export_into_db.sql
+
+mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -P 3306 -u root -p
+(enter your password)
+create database rdsdatabase;
+
+
+
+mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -u root -p  rdsdatabase1 < export_into_db.sql
+
+
+
+mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -P 3306 -u root -p
+(enter your password)
+use rdsdatabase;
+show tables;
