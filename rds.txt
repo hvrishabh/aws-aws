@@ -1,3 +1,151 @@
+
+https://stackoverflow.com/questions/11731714/how-do-i-import-a-local-mysql-db-to-rds-db-instance
+
+
+Connecting RDS to EC2 and import database into RDS..............
+Details............
+
+dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com
+root
+root1234
+db1
+.....................................
+
+mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -P 3306 -u root -p
+
+root1234
+create database cloud_db;
+
+
+mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -u root -p  cloud_db < db1/d10d2.sql
+
+
+
+mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -P 3306 -u root -p
+(enter your password)
+use cloud_db 
+show tables;
+
+
+..............................................
+install...........
+
+apache2 
+msyql 8.0
+php8.2
+php libraries
+
+error.....
+
+sudo a2dismod php8.1
+sudo a2enmod php8.2
+sudo systemctl restart apache2
+
+Configure virtual host.............
+
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/cloudsoft_demoProject.conf
+
+sudo nano /etc/apache2/sites-available/cloudsoft_demoProject.conf
+
+<VirtualHost *:80>
+  ...
+    ServerAdmin hiteshweb.aws@gmail.com
+    ServerName cloudsoft_demoProject
+    ServerAlias www.cloudsoft_demoProject
+    DocumentRoot /var/www/html/cloudsoft-demoProject/web
+    ...
+</VirtualHost>
+
+
+sudo a2ensite cloudsoft_demoProject.conf
+sudo a2ensite your_domain_2.conf
+
+
+Before reloading your server, disable the default site defined in 000-default.conf by using the a2dissite command:
+
+sudo a2dissite 000-default.conf
+
+Site 000-default disabled.
+To activate the new configuration, you need to run:
+  systemctl reload apache2
+
+
+
+
+...........
+If you are on a Mac or Linux computer, edit your local file with administrative privileges by typing:
+
+sudo nano /etc/hosts
+
+
+52.65.199.117 cloudsoft_demoProject
+127.0.0.1   localhost
+127.0.1.1   guest-desktop
+your_server_IP your_domain_1
+your_server_IP your_domain_2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...................................................................................
+27
+
+I prefer using MySQL workbench. It's much more easier & user friendly than the command line way.
+
+It provides a simple GUI.
+
+MySQL workbench or SQL Yog.
+
+These are the steps that I did.
+
+1) Install MySQL Workbench.
+
+2) In AWS console, there must be a security group for your RDS instance. Add an inbound rule to that group for allowing connections from your machine. It's simple. Add your IP-address.
+
+3) Open MySQL workbench, Add a new connection.
+
+4) Give the connection a name you prefer.
+
+5) Choose connection method- Standard TCP/IP
+
+6) Enter your RDS endpoint in the field of Hostname.
+
+7) Port:3306
+
+8) Username: master username (the one which which you created during the creation of your RDS instance)
+
+9)Password: master password
+
+10) Click Test Connection to check your connection.
+
+11) If connection is successful, click OK.
+
+12) Open the connection.
+
+13) you will see your database 'realcardiodb' there.
+
+14) Now you can export your mysqldump file to this database. Go to-> Server. Click Data Import.
+
+15) You can check whether the data has been migrated by simply opening a blank SQL file & typing in basic SQL commands like use database, select * from table;
+
+That's it. Viola.
+.................................................................................................................
+
 CREATE TABLE db1.student
 (
     student_id int(10) not null,
@@ -13,6 +161,8 @@ root
 root1234
 export_into_db.sql
 
+
+.........................
 mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -P 3306 -u root -p
 (enter your password)
 create database rdsdatabase;
@@ -27,3 +177,9 @@ mysql -h dbubuntu1.ckf0j67xxurz.ap-southeast-2.rds.amazonaws.com -P 3306 -u root
 (enter your password)
 use rdsdatabase;
 show tables;
+
+
+
+
+
+
